@@ -28,7 +28,7 @@ func main() {
   // choose color from:
   // blue
   // lightBlue
-  // yellow
+  // yellow - default color
   // red
   // teal
   getenv.Color("yellow")
