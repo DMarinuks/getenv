@@ -60,8 +60,12 @@ func makeFormat(color string, argsCount int) string {
 
 func logMsg(fatal bool, args ...interface{}) {
 	if debugMode || fatal {
+		c := color
+		if fatal {
+			c = red
+		}
 		if colorMode {
-			logger.Printf(makeFormat(color, len(args)), args...)
+			logger.Printf(makeFormat(c, len(args)), args...)
 		} else {
 			logger.Println(args...)
 		}
