@@ -1,4 +1,4 @@
-# go-env-loader
+# getenv
 Loads environment variables into an int, bool or string  
 Has debug-mode to log what values environment variables have.  
 Can log messages with color.  
