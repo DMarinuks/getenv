@@ -1,10 +1,14 @@
 # go-env-loader
-Loads ENV into int, bool or string
+Loads environment variables into an int, bool or string  
+Has debug-mode to log what values environment variables have.  
+Can log messages with color.  
+You can change color and set custom logger.
 
 ## Description
-getenv has 3 load functions Int(), Bool() or Str()  
-each function accepts 3 parameters:  
-getenv.Int(ENV_KEY, variable_pointer, fatal)
+`getenv` has 3 load functions `Int()`, `Bool()` or `Str()`  
+Each function accepts 3 parameters:  
+getenv.Int("ENV_KEY", &variable_pointer, log_fatal_bool)
+
 
 ## Example
 
@@ -16,8 +20,11 @@ var debug bool
 var uploadDir string
 
 func main() {
+  // set debug mode
   getenv.DebugMode(true)
+  // set color mode
   getenv.ColorMode(true)
+
   // choose color from:
   // blue
   // lightBlue
@@ -25,7 +32,12 @@ func main() {
   // red
   // teal
   getenv.Color("yellow")
+
+  // set custom logger
+  myLogger = log.New(os.Stdout, "", 0)
+  getenv.Logger(myLogger)
   
+  // get environment variables
   getenv("SERVER_PORT", &serverPort, false)
   getenv("DEBUG", &serverPort, false)
   getenv("UPLOAD_DIR", &serverPort, true)
