@@ -20,19 +20,19 @@ var debugMode = false
 var colorMode = false
 var color = yellow
 
-func SetLogger(newLogger *log.Logger) {
+func Logger(newLogger *log.Logger) {
 	logger = newLogger
 }
 
-func SetDebugMode(v bool) {
+func DebugMode(v bool) {
 	debugMode = v
 }
 
-func SetColorMode(v bool) {
+func ColorMode(v bool) {
 	colorMode = v
 }
 
-func setColor(v string) {
+func Color(v string) {
 	switch v {
 	case "blue":
 		color = blue
@@ -76,8 +76,8 @@ func logMsg(fatal bool, args ...interface{}) {
 	}
 }
 
-// GetEnvInt loads env key and returns it as an int value
-func GetEnvInt(key string, variable *int, fatal bool) {
+// Int loads env key and returns it as an int value
+func Int(key string, variable *int, fatal bool) {
 	logMsg(false,"GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		i, err := strconv.Atoi(val)
@@ -94,8 +94,8 @@ func GetEnvInt(key string, variable *int, fatal bool) {
 	}
 }
 
-// GetEnvBool loads env key and returns it as a bool value
-func GetEnvBool(key string, variable *bool, fatal bool) {
+// Bool loads env key and returns it as a bool value
+func Bool(key string, variable *bool, fatal bool) {
 	logMsg(false,"GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		*variable = strings.ToLower(val) != "false"
@@ -106,8 +106,8 @@ func GetEnvBool(key string, variable *bool, fatal bool) {
 	}
 }
 
-// GetEnvStr loads env key and returns it as a string value
-func GetEnvStr(key string, variable *string, fatal bool) {
+// Str loads env key and returns it as a string value
+func Str(key string, variable *string, fatal bool) {
 	logMsg(false,"GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		*variable = val

@@ -5,31 +5,31 @@ import (
 	"testing"
 )
 
-func TestGetEnvInt(t *testing.T) {
+func TestInt(t *testing.T) {
 	os.Setenv("FOO", "123")
 	want := 123
 	got := 0
-	GetEnvInt("FOO", &got, false)
+	Int("FOO", &got, false)
 	if got != want {
 		t.Errorf("GetEnvInt() = %v, want %v", got, want)
 	}
 }
 
-func TestGetEnvBool(t *testing.T) {
+func TestBool(t *testing.T) {
 	os.Setenv("FOO", "true")
 	want := true
 	got := false
-	GetEnvBool("FOO", &got, false)
+	Bool("FOO", &got, false)
 	if got != want {
 		t.Errorf("GetEnvBool() = %v, want %v", got, want)
 	}
 }
 
-func TestGetEnvStr(t *testing.T) {
+func TestStr(t *testing.T) {
 	os.Setenv("FOO", "BAR")
 	want := "BAR"
 	got := ""
-	GetEnvStr("FOO", &got, false)
+	Str("FOO", &got, false)
 	if got != want {
 		t.Errorf("GetEnvInt() = %v, want %v", got, want)
 	}
