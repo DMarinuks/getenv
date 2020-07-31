@@ -13,7 +13,7 @@ getenv.Int("ENV_KEY", &variable_pointer, log_fatal_bool)
 ## Example
 
 ```go
-import "github.com/DMarinuks/go-env-loader/getenv"
+import "github.com/DMarinuks/go-env-loader"
 
 var serverPort int
 var debug bool
