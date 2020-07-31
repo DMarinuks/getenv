@@ -8,11 +8,11 @@ import (
 )
 
 const (
-	blue     = "\033[1;34m"
+	blue      = "\033[1;34m"
 	lightBlue = "\033[1;36m"
 	yellow    = "\033[1;33m"
-	red      = "\033[1;31m"
-	teal     = "\033[0;36m"
+	red       = "\033[1;31m"
+	teal      = "\033[0;36m"
 )
 
 var logger = log.New(os.Stdout, "", 0)
@@ -59,7 +59,7 @@ func makeFormat(color string, argsCount int) string {
 }
 
 func logMsg(fatal bool, args ...interface{}) {
-	if debugMode {
+	if debugMode || fatal {
 		if colorMode {
 			logger.Printf(makeFormat(color, len(args)), args...)
 		} else {
@@ -67,18 +67,13 @@ func logMsg(fatal bool, args ...interface{}) {
 		}
 	}
 	if fatal {
-		if colorMode {
-			logger.Printf(makeFormat(red, len(args)), args...)
-		} else {
-			logger.Println(args...)
-		}
 		os.Exit(1)
 	}
 }
 
 // Int loads env key and returns it as an int value
 func Int(key string, variable *int, fatal bool) {
-	logMsg(false,"GetEnv Key:", key, "=", os.Getenv(key))
+	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		i, err := strconv.Atoi(val)
 		if err != nil {
@@ -86,7 +81,7 @@ func Int(key string, variable *int, fatal bool) {
 				logMsg(fatal, "Could not load ENV", key)
 			}
 		}
-		*variable =i
+		*variable = i
 	} else {
 		if fatal {
 			logMsg(fatal, "Could not load ENV", key)
@@ -96,7 +91,7 @@ func Int(key string, variable *int, fatal bool) {
 
 // Bool loads env key and returns it as a bool value
 func Bool(key string, variable *bool, fatal bool) {
-	logMsg(false,"GetEnv Key:", key, "=", os.Getenv(key))
+	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		*variable = strings.ToLower(val) != "false"
 	} else {
@@ -108,7 +103,7 @@ func Bool(key string, variable *bool, fatal bool) {
 
 // Str loads env key and returns it as a string value
 func Str(key string, variable *string, fatal bool) {
-	logMsg(false,"GetEnv Key:", key, "=", os.Getenv(key))
+	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		*variable = val
 	} else {
