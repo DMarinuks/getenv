@@ -1,3 +1,3 @@
-module github.com/DMarinuks/go-env-loader
+module github.com/DMarinuks/getenv
 
 go 1.14
