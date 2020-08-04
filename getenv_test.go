@@ -24,10 +24,10 @@ func TestBool(t *testing.T) {
 }
 
 func TestStr(t *testing.T) {
-	os.Setenv("FOO", "BAR")
+	os.Setenv("FOO", "BAR ")
 	want := "BAR"
 	got := Str("FOO", false)
-	if got != want {
+	if got != want || len(got) != len(want){
 		t.Errorf("GetEnvInt() = %v, want %v", got, want)
 	}
 }
@@ -36,7 +36,7 @@ func TestStrSlice(t *testing.T) {
 	os.Setenv("FOO", "BAR, CAT")
 	want := []string{"BAR", "CAT"}
 	got := StrSlice("FOO",",", false)
-	if len(got) == 0 || (got[0] != want[0] && got[1] != want[1]) {
+	if len(got) == 0 || (got[0] != want[0] && got[1] != want[1]) || len(got[1]) != len(want[1]) {
 		t.Errorf("GetEnvInt() = %v, want %v", got, want)
 	}
 }

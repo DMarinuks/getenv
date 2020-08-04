@@ -114,7 +114,7 @@ func Bool(key string, fatal bool) (bool, error) {
 func Str(key string, fatal bool) string  {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
-		return val
+		return strings.TrimSpace(val)
 	}
 	if fatal {
 		logMsg(fatal, "Could not load ENV", key)
@@ -130,7 +130,7 @@ func StrSlice(key string, separator string, fatal bool) []string {
 	if val := os.Getenv(key); len(val) > 0 {
 		arr := strings.Split(val, separator)
 		for _, v := range arr {
-			results = append(results, v)
+			results = append(results, strings.TrimSpace(v))
 		}
 		return results
 	}
