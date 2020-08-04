@@ -77,7 +77,7 @@ func logMsg(fatal bool, args ...interface{}) {
 }
 
 // Int loads env key and returns it as an int value
-func Int(key string, fatal bool) (int, error) {
+func Int(key string, out *int, fatal bool) {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		i, err := strconv.Atoi(val)
@@ -85,41 +85,39 @@ func Int(key string, fatal bool) (int, error) {
 			if fatal {
 				logMsg(fatal, "Could not load ENV", key)
 			}
-			return -1, err
+			return
 		}
-		return i, nil
+		*out = i
+		return
 	}
 	if fatal {
 		logMsg(fatal, "Could not load ENV", key)
 	}
-	return -1, errors.New("environment variable not found")
 }
 
 // Bool loads env key and returns it as a bool value
-func Bool(key string, fatal bool) (bool, error) {
+func Bool(key string, out *bool, fatal bool) {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := strings.ToLower(os.Getenv(key)); len(val) > 0 {
-		if val != "false" && val != "true" {
-			return false, errors.New("not bool value")
+		if val == "false" || val == "true"  {
+			*out = strings.ToLower(val) == "true"
+			return
 		}
-		return strings.ToLower(val) == "true", nil
 	}
 	if fatal {
 		logMsg(fatal, "Could not load ENV", key)
 	}
-	return false, errors.New("environment variable not found")
 }
 
 // Str loads env key and returns it as a string value
-func Str(key string, fatal bool) string  {
+func Str(key string, out *string, fatal bool)  {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
-		return strings.TrimSpace(val)
+		*out = val
 	}
 	if fatal {
 		logMsg(fatal, "Could not load ENV", key)
 	}
-	return ""
 }
 
 // StrSlice takes ENV_KEY string, separator string, variable []string, fatal bool
@@ -148,15 +146,16 @@ func IntSlice(key string, separator string, fatal bool) ([]int, error){
 	if val := os.Getenv(key); len(val) > 0 {
 		arr := strings.Split(val, separator)
 		for _, v := range arr {
-			i, err := strconv.Atoi(v)
+			i, err := strconv.Atoi(strings.TrimSpace(v))
 			if err != nil {
 				if fatal {
 					logMsg(fatal, "Could not load ENV", key)
 				}
-				return results, err
+				return []int{}, err
 			}
 			results = append(results, i)
 		}
+		return results, nil
 	}
 	if fatal {
 		logMsg(fatal, "Could not load ENV", key)
@@ -172,11 +171,16 @@ func BoolSlice(key string, separator string, fatal bool) ([]bool, error){
 	if val := os.Getenv(key); len(val) > 0 {
 		arr := strings.Split(val, separator)
 		for _, v := range arr {
-			v = strings.ToLower(v)
-			if v != "false" && v != "true" {
-				return results, errors.New("not bool value")
+			v = strings.TrimSpace(strings.ToLower(v))
+			if v == "false" || v == "true" {
+				results = append(results, strings.ToLower(v) == "true")
+			} else {
+				if fatal {
+					logMsg(fatal, "Could not load ENV", key)
+				}
+				return []bool{}, errors.New("not bool value")
 			}
-			results = append(results, strings.ToLower(v) == "true")
+
 		}
 		return results, nil
 	}
