@@ -76,7 +76,8 @@ func logMsg(fatal bool, args ...interface{}) {
 	}
 }
 
-// Int loads env key and returns it as an int value
+// Int - takes ENV_KEY, out *int, fatal bool
+// It will override "out" value if ENV_KEY is not empty
 func Int(key string, out *int, fatal bool) {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
@@ -95,7 +96,8 @@ func Int(key string, out *int, fatal bool) {
 	}
 }
 
-// Bool loads env key and returns it as a bool value
+// Bool - takes ENV_KEY, out *string, fatal bool
+// It will override "out" value if ENV_KEY is not empty
 func Bool(key string, out *bool, fatal bool) {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := strings.ToLower(os.Getenv(key)); len(val) > 0 {
@@ -109,19 +111,21 @@ func Bool(key string, out *bool, fatal bool) {
 	}
 }
 
-// Str loads env key and returns it as a string value
+// Str - takes ENV_KEY, out *string, fatal bool
+// It will override "out" value if ENV_KEY is not empty
 func Str(key string, out *string, fatal bool)  {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	if val := os.Getenv(key); len(val) > 0 {
 		*out = val
+		return
 	}
 	if fatal {
 		logMsg(fatal, "Could not load ENV", key)
 	}
 }
 
-// StrSlice takes ENV_KEY string, separator string, variable []string, fatal bool
-// It return slice of strings
+// StrSlice takes ENV_KEY string, separator string, fatal bool.
+// It will return slice of strings and error value.
 func StrSlice(key string, separator string, fatal bool) []string {
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	var results []string
@@ -138,8 +142,8 @@ func StrSlice(key string, separator string, fatal bool) []string {
 	return results
 }
 
-// IntSlice takes ENV_KEY string, separator string, variable []int, fatal bool
-// It return slice of strings
+// IntSlice takes ENV_KEY string, separator string, fatal bool
+// It will return slice of strings and error value.
 func IntSlice(key string, separator string, fatal bool) ([]int, error){
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	var results []int
@@ -163,8 +167,8 @@ func IntSlice(key string, separator string, fatal bool) ([]int, error){
 	return results, errors.New("environment variable not found")
 }
 
-// BoolSlice takes ENV_KEY string, separator string, variable []bool, fatal bool
-// It return slice of strings
+// BoolSlice takes ENV_KEY string, separator string, fatal bool
+// It will return slice of strings and error value.
 func BoolSlice(key string, separator string, fatal bool) ([]bool, error){
 	logMsg(false, "GetEnv Key:", key, "=", os.Getenv(key))
 	var results []bool
